@@ -1,0 +1,275 @@
+### Authentication APIs
+
+# Register a new user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "User One",
+  "email": "userone@example.com",
+  "password": "password123"
+}
+
+###
+
+# Login the user
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "userone@example.com",
+  "password": "password123"
+}
+
+###
+
+# Register another user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "User Two",
+  "email": "usertwo@example.com",
+  "password": "password456"
+}
+
+###
+
+# Login the second user
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usertwo@example.com",
+  "password": "password456"
+}
+
+###
+
+### User APIs
+
+# Get User One profile
+GET http://localhost:5000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+###
+
+# Update User One profile
+PUT http://localhost:5000/api/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "name": "User One Updated",
+  "preferences": {
+    "genres": ["Action", "Thriller"],
+    "favoriteActors": ["Actor A", "Actor B"]
+  }
+}
+
+###
+
+### Movie APIs
+
+# Add multiple movies
+
+POST http://localhost:5000/api/movies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "title": "The Action Hero",
+  "genre": ["Action", "Adventure"],
+  "releaseDate": "2024-02-01",
+  "runtime": 120,
+  "synopsis": "An action-packed adventure.",
+  "director": "Director X"
+}
+
+###
+
+POST http://localhost:5000/api/movies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "title": "Comedy Nights",
+  "genre": ["Comedy"],
+  "releaseDate": "2023-12-15",
+  "runtime": 90,
+  "synopsis": "A hilarious take on daily life.",
+  "director": "Director Y"
+}
+
+###
+
+POST http://localhost:5000/api/movies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "title": "Sci-Fi Chronicles",
+  "genre": ["Science Fiction", "Drama"],
+  "releaseDate": "2024-06-10",
+  "runtime": 150,
+  "synopsis": "Exploring the unknown.",
+  "director": "Director Z"
+}
+
+###
+
+# Get all movies
+GET http://localhost:5000/api/movies
+
+###
+
+# Get a specific movie by ID
+GET http://localhost:5000/api/movies/673621fb0ec0a7465053bfef
+
+###
+
+### Review APIs
+
+# Add a review for a movie
+POST http://localhost:5000/api/reviews
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "movieId": "673621fb0ec0a7465053bfef",
+  "rating": 5,
+  "review": "Amazing action sequences!"
+}
+
+
+# Get reviews for the movie
+GET http://localhost:5000/api/reviews/673621fb0ec0a7465053bfef
+
+###
+
+### Upcoming Movie APIs
+
+# Get all upcoming movies
+GET http://localhost:5000/api/upcoming
+
+###
+
+# Subscribe to reminders for an upcoming movie
+POST http://localhost:5000/api/upcoming/673622080ec0a7465053bff5/subscribe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+###
+
+### Admin APIs
+
+# Get site statistics
+GET http://localhost:5000/api/admin/statistics
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+###
+
+# Moderate reviews
+GET http://localhost:5000/api/admin/moderate-reviews
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+###
+
+### Notification APIs
+
+# Send a notification to a user
+POST http://localhost:5000/api/notifications/send
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+{
+  "userId": "67362007ed60f6495830a744",
+  "subject": "Upcoming Movie Release",
+  "message": "Hi! Don't miss 'The Action Hero' releasing on February 1, 2024."
+}
+
+###
+
+### Custom Lists APIs
+
+# Create a custom list
+POST http://localhost:5000/api/lists
+Content-Type: application/json
+Authorization: Bearer 67362007ed60f6495830a744
+
+{
+  "name": "Top Sci-Fi Movies",
+  "description": "A collection of the best sci-fi movies.",
+  "movies": ["673622080ec0a7465053bff5", "67399874d7d2ee9dde14110b"]
+}
+
+###
+
+# Get the user's custom lists
+GET http://localhost:5000/api/lists/my-lists
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzYyMDA3ZWQ2MGY2NDk1ODMwYTc0NCIsImlhdCI6MTczMTgyNzc4NywiZXhwIjoxNzMyNDMyNTg3fQ.F-JJjnFk64gs4WxaYv7WLXnx5F0iy2h37xbcOO8Zl2Y
+
+###
+
+# Follow a custom list
+POST http://localhost:5000/api/lists/{{listId}}/follow
+Authorization: Bearer {{token_user2}}
+
+###
+
+### Articles APIs
+
+# Create an article
+POST http://localhost:5000/api/articles
+Content-Type: application/json
+Authorization: Bearer {{token_admin}}
+
+{
+  "title": "Exciting New Sci-Fi Movies",
+  "content": "2024 is the year of sci-fi blockbusters.",
+  "category": "Movies",
+  "relatedMovies": ["{{movieId}}"]
+}
+
+###
+
+# Get all articles
+GET http://localhost:5000/api/articles
+
+###
+
+### Discussion APIs
+
+# Create a new discussion
+POST http://localhost:5000/api/discussions
+Content-Type: application/json
+Authorization: Bearer {{token_user1}}
+
+{
+  "topic": "Best Sci-Fi Movies",
+  "relatedMovie": "{{movieId}}"
+}
+
+###
+
+# Add a comment to a discussion
+POST http://localhost:5000/api/discussions/{{discussionId}}/comment
+Content-Type: application/json
+Authorization: Bearer {{token_user2}}
+
+{
+  "text": "I love this movie!"
+}
+
+###
+
+### Box Office APIs
+
+# Get box office data for a movie
+GET http://localhost:5000/api/box-office/{{movieId}}
+
+###
+
+### Awards APIs
+
+# Get all awards
+GET http://localhost:5000/api/awards?year=2024

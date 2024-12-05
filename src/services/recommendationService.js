@@ -4,15 +4,36 @@ const User = require('../models/User');
 
 const getPersonalizedRecommendations = async (userId) => {
   try {
-    const user = await User.findById(userId);
-    const { genres } = user.preferences;
+    const userReviews = await Review.find({ userId });
+    const reviewedMovieIds = userReviews.map((review) => review.movieId);
 
-    // Fetch top-rated movies in the user's preferred genres
-    const recommendedMovies = await Movie.find({ genre: { $in: genres } })
-      .sort({ averageRating: -1 })
-      .limit(10);
+    const similarUsers = await Review.aggregate([
+      { $match: { movieId: { $in: reviewedMovieIds }, userId: { $ne: userId } } },
+      { $group: { _id: '$userId', similarityScore: { $sum: 1 } } },
+      { $sort: { similarityScore: -1 } },
+      { $limit: 10 },
+    ]);
 
-    return recommendedMovies;
+    
+    const similarUserIds = similarUsers.map((user) => user._id);
+
+    const recommendations = await Review.aggregate([
+      { $match: { userId: { $in: similarUserIds }, movieId: { $nin: reviewedMovieIds } } },
+      { $group: { _id: '$movieId', avgRating: { $avg: '$rating' } } },
+      { $sort: { avgRating: -1 } },
+      { $limit: 10 },
+      {
+        $lookup: {
+          from: 'movies',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'movieDetails',
+        },
+      },
+      { $unwind: '$movieDetails' },
+    ]);
+
+    return recommendations.map((rec) => rec.movieDetails);
   } catch (error) {
     throw new Error(`Error generating recommendations: ${error.message}`);
   }
@@ -24,7 +45,7 @@ const getSimilarTitles = async (movieId) => {
     if (!movie) throw new Error('Movie not found');
 
     const similarMovies = await Movie.find({
-      _id: { $ne: movie._id }, // Exclude the current movie
+      _id: { $ne: movie._id },
       $or: [
         { genre: { $in: movie.genre } },
         { director: movie.director },
@@ -39,7 +60,6 @@ const getSimilarTitles = async (movieId) => {
   }
 };
 
-
 const getTrendingMovies = async () => {
   try {
     const trending = await Review.aggregate([
@@ -50,7 +70,7 @@ const getTrendingMovies = async () => {
           averageRating: { $avg: '$rating' },
         },
       },
-      { $sort: { reviewCount: -1 } }, // sort in descending
+      { $sort: { reviewCount: -1 } },
       { $limit: 10 },
       {
         $lookup: {
@@ -68,7 +88,6 @@ const getTrendingMovies = async () => {
     throw new Error(`Error fetching trending movies: ${error.message}`);
   }
 };
-
 
 const getTopRatedMovies = async () => {
   try {
